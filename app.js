@@ -3,13 +3,19 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const cors = require("cors");
+const passport = require("passport");
+
+var app = express();
 
 require("./config/database");
+require("./config/passport")(passport);
+
+app.use(passport.initialize()); //required for any passport strategy
+app.use(cors());
 
 var indexRouter = require("./routes/index");
 var postsRouter = require("./routes/posts");
-
-var app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

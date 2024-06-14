@@ -2,8 +2,7 @@ const passport = require("passport");
 const BlogUser = require("../models/blogUser");
 const bcrypt = require("bcryptjs");
 
-// const LocalStrategy = require("passport-local");
-const connection = require("./database");
+require("./database");
 
 const JWTstrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
@@ -15,7 +14,6 @@ const options = {
 };
 
 const strategy = new JWTstrategy(options, (payload, done) => {
-  //
   const user = BlogUser.findOne({ id: payload.sub })
     .then((user) => {
       //
@@ -28,7 +26,9 @@ const strategy = new JWTstrategy(options, (payload, done) => {
     .catch((err) => done(err, null));
 });
 
-passport.use(strategy);
+module.exports = (passport) => {
+  passport.use(strategy);
+};
 
 // try {
 //   const user = BlogUser.findOne({ id: payload.sub });
@@ -40,21 +40,3 @@ passport.use(strategy);
 // } catch (err) {
 //   return done(err);
 // }
-
-// passport.use(
-//   new LocalStrategy(async (username, password, done) => {
-//     try {
-//       const user = await User.findOne({ username: username });
-//       if (!user) {
-//         return done(null, false, { message: "Incorrect username" });
-//       }
-//       const match = await bcrypt.compare(password, user.password);
-//       if (!match) {
-//         return done(null, false, { message: "Incorrect password" });
-//       }
-//       return done(null, user);
-//     } catch (err) {
-//       return done(err);
-//     }
-//   })
-// );
