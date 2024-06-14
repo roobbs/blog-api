@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
+const BlogUserSchema = new Schema({
   first_name: { type: String, required: true, minLength: 2, maxLength: 20 },
   last_name: { type: String, required: true, minLength: 2, maxLength: 20 },
   username: {
@@ -15,4 +15,4 @@ const UserSchema = new Schema({
   author: { type: Boolean, required: true },
 });
 
-module.exports = mongoose.model("BlogUser", UserSchema);
+module.exports = mongoose.model("BlogUser", BlogUserSchema);
