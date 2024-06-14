@@ -9,8 +9,6 @@ router.get("/", function (req, res, next) {
 
 router.post("/signup", indexControler.signUp);
 
-router.get("/login", function (req, res, next) {
-  res.send("Log In NOT IMPLEMENTED");
-});
+router.get("/login", indexControler.logIn);
 
 module.exports = router;

@@ -2,6 +2,7 @@ const BlogUser = require("../models/blogUser");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+const utils = require("../lib/utils");
 
 exports.signUp = [
   body("first_name", "First name must not be empty")
@@ -46,9 +47,25 @@ exports.signUp = [
       });
 
       await newUser.save();
-      res.status(201).json({ message: "User created successfully" });
+
+      const jwt = utils.issueJwt(newUser);
+
+      res.status(201).json({
+        message: "User created successfully",
+        user: newUser,
+        token: jwt.token,
+        expiresIn: jwt.expires,
+      });
     } catch (error) {
       next(error);
     }
   }),
 ];
+
+exports.logIn = asyncHandler(async (req, res, next) => {
+  // jwt.sign({ user: user }, "secretkey", (err, token) => {
+  //   res.json({ token: token });
+  // });
+
+  res.send("NOT IMPLEMENTES");
+});
