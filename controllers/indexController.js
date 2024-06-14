@@ -51,7 +51,8 @@ exports.signUp = [
       const jwt = utils.issueJwt(newUser);
 
       res.status(201).json({
-        message: "User created successfully",
+        success: true,
+        msg: "User created successfully",
         user: newUser,
         token: jwt.token,
         expiresIn: jwt.expires,
@@ -63,9 +64,25 @@ exports.signUp = [
 ];
 
 exports.logIn = asyncHandler(async (req, res, next) => {
-  // jwt.sign({ user: user }, "secretkey", (err, token) => {
-  //   res.json({ token: token });
-  // });
+  const user = await BlogUser.findOne({ username: req.body.username });
 
-  res.send("NOT IMPLEMENTES");
+  if (!user) {
+    res.status(401).json({ success: false, msg: "could not find user" });
+  }
+
+  const isValid = await bcrypt.compare(req.body.password, user.password);
+
+  if (isValid) {
+    const jwt = utils.issueJwt(user);
+
+    res.status(201).json({
+      success: true,
+      msg: "User logged in successfully",
+      user: user,
+      token: jwt.token,
+      expiresIn: jwt.expires,
+    });
+  } else {
+    return done(null, false, { succes: false, msg: "Incorrect password" });
+  }
 });
