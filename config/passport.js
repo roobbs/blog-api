@@ -9,34 +9,23 @@ const ExtractJWT = require("passport-jwt").ExtractJwt;
 
 const options = {
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: "SECRET",
+  secretOrKey: "SECRETKEY",
   // algorithms: [RS256],
 };
 
 const strategy = new JWTstrategy(options, (payload, done) => {
-  const user = BlogUser.findOne({ id: payload.sub })
-    .then((user) => {
-      //
-      if (user) {
-        return done(null, user);
-      } else {
-        return done(null, false);
-      }
-    })
-    .catch((err) => done(err, null));
+  try {
+    const user = BlogUser.findOne({ id: payload.sub });
+    if (!user) {
+      return done(null, false);
+    } else {
+      return done(null, user);
+    }
+  } catch (err) {
+    return done(err);
+  }
 });
 
 module.exports = (passport) => {
   passport.use(strategy);
 };
-
-// try {
-//   const user = BlogUser.findOne({ id: payload.sub });
-//   if (!user) {
-//     return done(null, false);
-//   } else {
-//     return done(null, user);
-//   }
-// } catch (err) {
-//   return done(err);
-// }
