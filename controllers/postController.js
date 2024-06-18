@@ -4,7 +4,7 @@ const BlogUserUser = require("../models/blogUser");
 const asyncHandler = require("express-async-handler");
 
 exports.postsListGet = asyncHandler(async (req, res, next) => {
-  const posts = await Post.find().sort({ date: 1 }).exec();
+  const posts = await Post.find({ published: true }).sort({ date: 1 }).exec();
 
   res.json(posts);
 });
