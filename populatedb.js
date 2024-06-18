@@ -47,6 +47,8 @@ async function createData() {
       title: "Mi primer post",
       text: "Este es el contenido de mi primer post. Es un gran día para empezar a escribir.",
       published: true,
+      label: "react",
+      readtime: "5 min",
     });
 
     const post2 = new Post({
@@ -55,6 +57,8 @@ async function createData() {
       title: "Mi segundo post",
       text: "Este es el contenido de mi segundo post. Estoy disfrutando mucho escribir.",
       published: true,
+      label: "react",
+      readtime: "5 min",
     });
 
     await post1.save();

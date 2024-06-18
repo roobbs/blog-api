@@ -6,6 +6,8 @@ const PostsSchema = new Schema({
   date: { type: Date, required: true },
   title: { type: String, required: true, minLength: 5, maxLength: 50 },
   text: { type: String, required: true, minLength: 20 },
+  label: { type: String, required: true },
+  readtime: { type: String, required: true },
   published: { type: Boolean, required: true },
 });
 
