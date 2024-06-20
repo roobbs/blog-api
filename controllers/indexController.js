@@ -67,7 +67,7 @@ exports.logIn = asyncHandler(async (req, res, next) => {
   const user = await BlogUser.findOne({ username: req.body.username });
 
   if (!user) {
-    res.status(401).json({ success: false, message: "could not find user" });
+    res.status(401).json({ success: false, message: "Invalid user" });
   }
 
   const isValid = await bcrypt.compare(req.body.password, user.password);
@@ -82,8 +82,7 @@ exports.logIn = asyncHandler(async (req, res, next) => {
       token: jwt.token,
       expiresIn: jwt.expires,
     });
+  } else {
+    res.status(401).json({ success: false, message: "Invalid password" });
   }
-  // else {
-  //   return next(null, false, { succes: false, msg: "Incorrect password" });
-  // }
 });
