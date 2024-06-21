@@ -1,6 +1,4 @@
-const Post = require("../models/posts");
 const Comment = require("../models/comment");
-const BlogUserUser = require("../models/blogUser");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
