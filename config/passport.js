@@ -13,9 +13,9 @@ const options = {
   // algorithms: [RS256],
 };
 
-const strategy = new JWTstrategy(options, (payload, done) => {
+const strategy = new JWTstrategy(options, async (payload, done) => {
   try {
-    const user = BlogUser.findOne({ id: payload.sub });
+    const user = await BlogUser.findById(payload.sub);
     if (!user) {
       return done(null, false);
     } else {
