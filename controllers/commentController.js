@@ -1,4 +1,6 @@
 const Comment = require("../models/comment");
+const Post = require("../models/posts");
+const BlogUser = require("../models/blogUser");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
@@ -15,12 +17,14 @@ exports.createComment = [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { message, userId, postId } = req.body;
+    const { message, postId } = req.body;
+
+    const post = await Post.findById(postId).exec();
 
     try {
       const comment = new Comment({
-        author: userId,
-        post: postId,
+        author: req.user._id,
+        post: post._id,
         date: new Date(),
         text: message,
       });
