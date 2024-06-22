@@ -12,8 +12,18 @@ exports.postsListGet = asyncHandler(async (req, res, next) => {
 exports.postDetail = asyncHandler(async (req, res, next) => {
   try {
     const [post, comments] = await Promise.all([
-      Post.findById(req.params.id).populate("author").exec(),
-      Comment.find({ post: req.params.id }).exec(),
+      Post.findById(req.params.id)
+        .populate({
+          path: "author",
+          select: "first_name last_name",
+        })
+        .exec(),
+      Comment.find({ post: req.params.id })
+        .populate({
+          path: "author",
+          select: "username",
+        })
+        .exec(),
     ]);
 
     if (post === null) {
