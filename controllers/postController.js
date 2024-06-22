@@ -19,6 +19,7 @@ exports.postDetail = asyncHandler(async (req, res, next) => {
         })
         .exec(),
       Comment.find({ post: req.params.id })
+        .sort({ date: 1 })
         .populate({
           path: "author",
           select: "username",
